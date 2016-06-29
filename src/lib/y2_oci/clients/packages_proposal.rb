@@ -1,5 +1,5 @@
 require "installation/proposal_client"
-require "y2_oci/instructions"
+require "y2_oci/repository_manager"
 
 module Y2OCI
   module Clients
@@ -37,7 +37,7 @@ module Y2OCI
       end
 
       def packages_summary
-        _("Package to install: ") + Y2OCI::Instructions.instance.packages.map(&:name).join(", ")
+        _("Package to install: ") + Y2OCI::RepositoryManager.instance.package.name
       end
     end
   end

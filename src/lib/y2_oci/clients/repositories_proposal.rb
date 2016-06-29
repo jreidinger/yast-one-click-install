@@ -1,5 +1,5 @@
 require "installation/proposal_client"
-require "y2_oci/instructions"
+require "y2_oci/repository_manager"
 
 module Y2OCI
   module Clients
@@ -38,7 +38,7 @@ module Y2OCI
 
       def repositories_summary
         _("Repositories to add: <ul><li>") +
-         Y2OCI::Instructions.instance.repositories.map(&:name).join("</li><li>") +
+         Y2OCI::RepositoryManager.instance.repositories.map(&:name).join("</li><li>") +
          "</li></ul>"
       end
     end

@@ -8,14 +8,6 @@ module Y2OCI
   class Instructions
     attr_reader :repositories, :packages
 
-    class << self
-      attr_reader :instance
-
-      def load(instruction_file)
-        @instance = new(instruction_file)
-      end
-    end
-
     def initialize(instruction_file)
       File.open(instruction_file) do |f|
         @document = REXML::Document.new(f)

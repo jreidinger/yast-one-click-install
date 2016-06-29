@@ -1,6 +1,6 @@
 require "yast"
 
-require "y2_oci/instructions"
+require "y2_oci/repository_manager"
 
 Yast.import "Report"
 
@@ -17,7 +17,7 @@ module Y2OCI
         end
 
         begin
-          Instructions.load(instruction_file)
+          RepositoryManager.instance.load_instructions(instruction_file)
         rescue => e
           Yast::Report.Error(_("Failed to load ymp file.\n#{e.message}"))
           return false
