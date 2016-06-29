@@ -9,6 +9,8 @@ module Y2OCI
       end
 
       def make_proposal(_attrs)
+        RepositoryManager.instance.sync_repos_to_system
+
         {
           "preformatted_proposal" => repositories_summary,
           "help"                  => help
@@ -16,8 +18,12 @@ module Y2OCI
       end
 
       def ask_user(param)
-        # TODO support clicking on it
-        { "workflow_sequence" => :next }
+        if param == "repositories_proposal"
+          # support clicking on it
+          { "workflow_sequence" => :next }
+        else
+          RepositoryManager.instance.repositories.delete_if{ |r| r.url = param }
+        end
       end
 
       def description
@@ -26,7 +32,7 @@ module Y2OCI
           "rich_text_title" => _("Repositories Summary"),
           # TRANSLATORS: a menu entry
           "menu_title"      => _("&Repositories Summary"),
-          "id" => "packages_proposal"
+          "id" => "repositories_proposal"
         }
       end
 
@@ -37,9 +43,11 @@ module Y2OCI
       end
 
       def repositories_summary
-        _("Repositories to add: <ul><li>") +
-         Y2OCI::RepositoryManager.instance.repositories.map(&:name).join("</li><li>") +
-         "</li></ul>"
+        repo_list = RepositoryManager.instance.repositories.map do |repo|
+          repo.name + "<a href=\"#{repo.url}\">remove</a>"
+        end
+
+        _("Repositories to add: <ul><li>") + repo_list.join("</li><li>") + "</li></ul>"
       end
     end
   end
